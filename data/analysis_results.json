@@ -1,0 +1,119 @@
+{
+  "metrics": [
+    {
+      "Model": "Logistic Regression",
+      "Accuracy": 0.8366666666666667,
+      "Precision": 0.8761904761904762,
+      "Recall": 0.71875,
+      "F1": 0.7896995708154506
+    },
+    {
+      "Model": "Random Forest",
+      "Accuracy": 0.9533333333333334,
+      "Precision": 0.9913793103448276,
+      "Recall": 0.8984375,
+      "F1": 0.9426229508196722
+    },
+    {
+      "Model": "XGBoost",
+      "Accuracy": 0.9466666666666667,
+      "Precision": 0.9912280701754386,
+      "Recall": 0.8828125,
+      "F1": 0.9338842975206612
+    }
+  ],
+  "top_features": [
+    {
+      "Feature": "TimeSpentOnWebsite",
+      "Importance": 0.20470227123787418
+    },
+    {
+      "Feature": "Age",
+      "Importance": 0.18404047898056952
+    },
+    {
+      "Feature": "DiscountsAvailed",
+      "Importance": 0.15925522483585103
+    },
+    {
+      "Feature": "AnnualIncome",
+      "Importance": 0.1562534017558575
+    },
+    {
+      "Feature": "NumberOfPurchases",
+      "Importance": 0.14061220542576852
+    },
+    {
+      "Feature": "LoyaltyProgram_1",
+      "Importance": 0.09892690344974446
+    },
+    {
+      "Feature": "Gender_1",
+      "Importance": 0.015169169813177112
+    },
+    {
+      "Feature": "ProductCategory_2",
+      "Importance": 0.011885537296067606
+    },
+    {
+      "Feature": "ProductCategory_4",
+      "Importance": 0.010507285598687877
+    },
+    {
+      "Feature": "ProductCategory_1",
+      "Importance": 0.010236529559414082
+    }
+  ],
+  "top_coefficients": [
+    {
+      "Feature": "DiscountsAvailed",
+      "Coefficient": 1.1591994827378795
+    },
+    {
+      "Feature": "LoyaltyProgram_1",
+      "Coefficient": 1.127980153735317
+    },
+    {
+      "Feature": "TimeSpentOnWebsite",
+      "Coefficient": 1.0319438088279087
+    },
+    {
+      "Feature": "AnnualIncome",
+      "Coefficient": 0.7280135501934358
+    },
+    {
+      "Feature": "NumberOfPurchases",
+      "Coefficient": 0.6044214238019358
+    },
+    {
+      "Feature": "ProductCategory_1",
+      "Coefficient": 0.04538989299219573
+    },
+    {
+      "Feature": "Gender_1",
+      "Coefficient": 0.017132300507723592
+    },
+    {
+      "Feature": "ProductCategory_2",
+      "Coefficient": -0.060502397279951284
+    },
+    {
+      "Feature": "ProductCategory_3",
+      "Coefficient": -0.06324012672647279
+    },
+    {
+      "Feature": "ProductCategory_4",
+      "Coefficient": -0.1261645087200699
+    }
+  ],
+  "confusion_matrix": [
+    [
+      171,
+      1
+    ],
+    [
+      15,
+      113
+    ]
+  ]
+}
