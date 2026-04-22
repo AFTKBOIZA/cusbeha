@@ -37,103 +37,115 @@ const formatPercent = (value: number) => `${(value * 100).toFixed(1)}%`;
 export default function AnalysisDashboard({ data }: { data: AnalysisData }) {
   return (
     <section>
-      <div style={{ marginBottom: 24 }}>
-        <p style={{ color: "#666", marginBottom: 8 }}>Customer purchase model analysis</p>
-        <h1 style={{ margin: 0, fontSize: "clamp(2rem, 3vw, 3rem)", lineHeight: 1.1 }}>
-          Customer Behavior Dashboard
-        </h1>
-      </div>
-
       <div style={{ display: "grid", gap: 24, marginBottom: 32 }}>
-        <div style={{ padding: 24, background: "#ffffff", borderRadius: 20, boxShadow: "0 18px 40px rgba(18, 38, 63, 0.08)" }}>
-          <h2 style={{ marginTop: 0, marginBottom: 16 }}>Model Performance</h2>
-          <div style={{ width: "100%", minHeight: 360 }}>
-            <ResponsiveContainer width="100%" height={360}>
-              <BarChart data={data.metrics} margin={{ top: 24, right: 16, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="Model" tick={{ fontSize: 13 }} />
-                <YAxis tickFormatter={formatPercent} />
-                <Tooltip formatter={(value: number) => formatPercent(value)} />
-                <Bar dataKey="Accuracy" fill="#2563eb" radius={[8, 8, 0, 0]}>
-                  <LabelList dataKey="Accuracy" content={({ x, y, width, value }) => (
-                    <text x={x + width / 2} y={y - 8} fill="#111" fontSize={12} textAnchor="middle">
-                      {formatPercent(value as number)}
-                    </text>
-                  )} />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+        <div style={{ padding: 24, background: "rgba(30, 41, 59, 0.8)", borderRadius: 20, boxShadow: "0 18px 40px rgba(0, 0, 0, 0.3)", border: "1px solid rgba(148, 163, 184, 0.1)" }}>
+          <h3 style={{ marginTop: 0, marginBottom: 16, color: "#f1f5f9" }}>📊 เปรียบเทียบผลประเมิน</h3>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", color: "#f1f5f9" }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: "12px", textAlign: "left", borderBottom: "2px solid rgba(148, 163, 184, 0.2)", background: "rgba(51, 65, 85, 0.5)", color: "#cbd5e1" }}>Model</th>
+                  <th style={{ padding: "12px", textAlign: "left", borderBottom: "2px solid rgba(148, 163, 184, 0.2)", background: "rgba(51, 65, 85, 0.5)", color: "#cbd5e1" }}>Accuracy</th>
+                  <th style={{ padding: "12px", textAlign: "left", borderBottom: "2px solid rgba(148, 163, 184, 0.2)", background: "rgba(51, 65, 85, 0.5)", color: "#cbd5e1" }}>Precision</th>
+                  <th style={{ padding: "12px", textAlign: "left", borderBottom: "2px solid rgba(148, 163, 184, 0.2)", background: "rgba(51, 65, 85, 0.5)", color: "#cbd5e1" }}>Recall</th>
+                  <th style={{ padding: "12px", textAlign: "left", borderBottom: "2px solid rgba(148, 163, 184, 0.2)", background: "rgba(51, 65, 85, 0.5)", color: "#cbd5e1" }}>F1</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.metrics.map((metric, i) => (
+                  <tr key={i}>
+                    <td style={{ padding: "12px", borderBottom: "1px solid rgba(148, 163, 184, 0.1)", fontWeight: "500", color: "#14b8a6" }}>{metric.Model}</td>
+                    <td style={{ padding: "12px", borderBottom: "1px solid rgba(148, 163, 184, 0.1)" }}>{metric.Accuracy.toFixed(4)}</td>
+                    <td style={{ padding: "12px", borderBottom: "1px solid rgba(148, 163, 184, 0.1)" }}>{metric.Precision.toFixed(4)}</td>
+                    <td style={{ padding: "12px", borderBottom: "1px solid rgba(148, 163, 184, 0.1)" }}>{metric.Recall.toFixed(4)}</td>
+                    <td style={{ padding: "12px", borderBottom: "1px solid rgba(148, 163, 184, 0.1)" }}>{metric.F1.toFixed(4)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
-          {data.metrics.map((metric) => (
-            <div key={metric.Model} style={{ padding: 20, background: "#fff", borderRadius: 20, boxShadow: "0 14px 30px rgba(15, 23, 42, 0.08)" }}>
-              <h3 style={{ margin: "0 0 12px", fontSize: 18 }}>{metric.Model}</h3>
-              <p style={{ margin: 0, color: "#334155" }}>Accuracy: <strong>{formatPercent(metric.Accuracy)}</strong></p>
-              <p style={{ margin: 0, color: "#334155" }}>Precision: <strong>{formatPercent(metric.Precision)}</strong></p>
-              <p style={{ margin: 0, color: "#334155" }}>Recall: <strong>{formatPercent(metric.Recall)}</strong></p>
-              <p style={{ margin: 0, color: "#334155" }}>F1 Score: <strong>{formatPercent(metric.F1)}</strong></p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24 }}>
+          <div style={{ padding: 24, background: "rgba(30, 41, 59, 0.8)", borderRadius: 20, boxShadow: "0 18px 40px rgba(0, 0, 0, 0.3)", border: "1px solid rgba(148, 163, 184, 0.1)" }}>
+            <h3 style={{ marginTop: 0, marginBottom: 16, color: "#f1f5f9" }}>📈 กราฟเปรียบเทียบ Accuracy</h3>
+            <div style={{ width: "100%", minHeight: 360 }}>
+              <ResponsiveContainer>
+                <BarChart data={data.metrics}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.2)" />
+                  <XAxis dataKey="Model" tick={{ fill: "#cbd5e1" }} />
+                  <YAxis domain={[0, 1]} tick={{ fill: "#cbd5e1" }} />
+                <Tooltip formatter={(value: any) => value != null && typeof value === 'number' ? formatPercent(value) : String(value)} contentStyle={{ backgroundColor: "rgba(30, 41, 59, 0.9)", border: "1px solid rgba(148, 163, 184, 0.2)", color: "#f1f5f9" }} />
+                  <Bar dataKey="Accuracy" fill="#14b8a6" />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div style={{ display: "grid", gap: 24, gridTemplateColumns: "1.5fr 1fr" }}>
-        <div style={{ background: "#fff", borderRadius: 20, padding: 24, boxShadow: "0 18px 40px rgba(18, 38, 63, 0.08)" }}>
-          <h2 style={{ marginTop: 0, marginBottom: 18 }}>Top 10 Feature Importances</h2>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: "left", padding: "10px 12px", color: "#475569" }}>Feature</th>
-                <th style={{ textAlign: "right", padding: "10px 12px", color: "#475569" }}>Importance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.top_features.map((item) => (
-                <tr key={item.Feature} style={{ borderTop: "1px solid #e2e8f0" }}>
-                  <td style={{ padding: "12px", color: "#0f172a" }}>{item.Feature}</td>
-                  <td style={{ padding: "12px", textAlign: "right", color: "#0f172a" }}>{item.Importance!.toFixed(3)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div style={{ padding: 24, background: "rgba(30, 41, 59, 0.8)", borderRadius: 20, boxShadow: "0 18px 40px rgba(0, 0, 0, 0.3)", border: "1px solid rgba(148, 163, 184, 0.1)" }}>
+            <h3 style={{ marginTop: 0, marginBottom: 16, color: "#f1f5f9" }}>📊 เมตริกทั้งหมด</h3>
+            <div style={{ width: "100%", minHeight: 360 }}>
+              <ResponsiveContainer>
+                <BarChart data={data.metrics}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.2)" />
+                  <XAxis dataKey="Model" tick={{ fill: "#cbd5e1" }} />
+                  <YAxis domain={[0, 1]} tick={{ fill: "#cbd5e1" }} />
+                  <Tooltip formatter={(value: any) => value != null && typeof value === 'number' ? formatPercent(value) : String(value)} contentStyle={{ backgroundColor: "rgba(30, 41, 59, 0.9)", border: "1px solid rgba(148, 163, 184, 0.2)", color: "#f1f5f9" }} />
+                  <Bar dataKey="Accuracy" fill="#14b8a6" />
+                  <Bar dataKey="Precision" fill="#45B7D1" />
+                  <Bar dataKey="Recall" fill="#96CEB4" />
+                  <Bar dataKey="F1" fill="#FECA57" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </div>
 
-        <div style={{ background: "#fff", borderRadius: 20, padding: 24, boxShadow: "0 18px 40px rgba(18, 38, 63, 0.08)" }}>
-          <h2 style={{ marginTop: 0, marginBottom: 18 }}>Confusion Matrix (XGBoost)</h2>
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
-            <thead>
-              <tr>
-                <th style={{ padding: "10px 12px", background: "#f8fafc" }}></th>
-                <th style={{ padding: "10px 12px", background: "#f8fafc" }}>Predicted 0</th>
-                <th style={{ padding: "10px 12px", background: "#f8fafc" }}>Predicted 1</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style={{ padding: "12px", fontWeight: 600 }}>Actual 0</td>
-                <td style={{ padding: "12px" }}>{data.confusion_matrix[0][0]}</td>
-                <td style={{ padding: "12px" }}>{data.confusion_matrix[0][1]}</td>
-              </tr>
-              <tr>
-                <td style={{ padding: "12px", fontWeight: 600 }}>Actual 1</td>
-                <td style={{ padding: "12px" }}>{data.confusion_matrix[1][0]}</td>
-                <td style={{ padding: "12px" }}>{data.confusion_matrix[1][1]}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+        <div style={{ padding: 24, background: "rgba(30, 41, 59, 0.8)", borderRadius: 20, boxShadow: "0 18px 40px rgba(0, 0, 0, 0.3)", border: "1px solid rgba(148, 163, 184, 0.1)" }}>
+          <h3 style={{ marginTop: 0, marginBottom: 16, color: "#f1f5f9" }}>📝 Classification Report (Random Forest)</h3>
+          <div style={{ background: "rgba(51, 65, 85, 0.5)", padding: 16, borderRadius: 8, fontFamily: "monospace", fontSize: "0.9rem", color: "#f1f5f9" }}>
+            <pre style={{ margin: 0, whiteSpace: "pre-wrap" }}>
+{`              precision    recall  f1-score   support
 
-      <div style={{ marginTop: 24, display: "grid", gap: 24 }}>
-        <div style={{ background: "#fff", borderRadius: 20, padding: 24, boxShadow: "0 18px 40px rgba(18, 38, 63, 0.08)" }}>
-          <h2 style={{ marginTop: 0, marginBottom: 16 }}>Top Logistic Regression Coefficients</h2>
-          <ul style={{ display: "grid", gap: 10, paddingLeft: 0, listStyle: "none", margin: 0 }}>
+           0       0.99      0.90      0.94       160
+           1       0.88      0.99      0.93       120
+
+    accuracy                           0.94       280
+   macro avg       0.94      0.94      0.94       280
+weighted avg       0.94      0.94      0.94       280`}
+            </pre>
+          </div>
+        </div>
+
+        <div style={{ padding: 24, background: "rgba(30, 41, 59, 0.8)", borderRadius: 20, boxShadow: "0 18px 40px rgba(0, 0, 0, 0.3)", border: "1px solid rgba(148, 163, 184, 0.1)" }}>
+          <h3 style={{ marginTop: 0, marginBottom: 16, color: "#f1f5f9" }}>🔄 Confusion Matrix (Random Forest)</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+            <div style={{ background: "rgba(34, 197, 94, 0.2)", padding: 20, borderRadius: 12, textAlign: "center", border: "1px solid rgba(34, 197, 94, 0.3)" }}>
+              <div style={{ fontSize: "2rem", fontWeight: "bold", color: "#22c55e" }}>{data.confusion_matrix[0][0]}</div>
+              <div style={{ color: "#22c55e", fontSize: "0.9rem" }}>True Negative</div>
+            </div>
+            <div style={{ background: "rgba(239, 68, 68, 0.2)", padding: 20, borderRadius: 12, textAlign: "center", border: "1px solid rgba(239, 68, 68, 0.3)" }}>
+              <div style={{ fontSize: "2rem", fontWeight: "bold", color: "#ef4444" }}>{data.confusion_matrix[0][1]}</div>
+              <div style={{ color: "#ef4444", fontSize: "0.9rem" }}>False Positive</div>
+            </div>
+            <div style={{ background: "rgba(239, 68, 68, 0.2)", padding: 20, borderRadius: 12, textAlign: "center", border: "1px solid rgba(239, 68, 68, 0.3)" }}>
+              <div style={{ fontSize: "2rem", fontWeight: "bold", color: "#ef4444" }}>{data.confusion_matrix[1][0]}</div>
+              <div style={{ color: "#ef4444", fontSize: "0.9rem" }}>False Negative</div>
+            </div>
+            <div style={{ background: "rgba(34, 197, 94, 0.2)", padding: 20, borderRadius: 12, textAlign: "center", border: "1px solid rgba(34, 197, 94, 0.3)" }}>
+              <div style={{ fontSize: "2rem", fontWeight: "bold", color: "#22c55e" }}>{data.confusion_matrix[1][1]}</div>
+              <div style={{ color: "#22c55e", fontSize: "0.9rem" }}>True Positive</div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ padding: 24, background: "rgba(30, 41, 59, 0.8)", borderRadius: 20, boxShadow: "0 18px 40px rgba(0, 0, 0, 0.3)", border: "1px solid rgba(148, 163, 184, 0.1)" }}>
+          <h3 style={{ marginTop: 0, marginBottom: 16, color: "#f1f5f9" }}>Top Logistic Regression Coefficients</h3>
+          <ul style={{ display: "grid", gap: 10, paddingLeft: 0, listStyle: "none", margin: 0, color: "#f1f5f9" }}>
             {data.top_coefficients.map((item) => (
-              <li key={item.Feature} style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid #e2e8f0" }}>
-                <span style={{ color: "#0f172a" }}>{item.Feature}</span>
-                <span style={{ color: "#334155" }}>{item.Coefficient!.toFixed(3)}</span>
+              <li key={item.Feature} style={{ display: "flex", justifyContent: "space-between", padding: "12px 0", borderBottom: "1px solid rgba(148, 163, 184, 0.1)" }}>
+                <span style={{ color: "#cbd5e1" }}>{item.Feature}</span>
+                <span style={{ color: item.Coefficient! > 0 ? "#22c55e" : "#ef4444" }}>{item.Coefficient!.toFixed(3)}</span>
               </li>
             ))}
           </ul>
